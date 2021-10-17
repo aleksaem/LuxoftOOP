@@ -11,7 +11,7 @@ public class Test {
 
         Employee employeeById = employeeService.getById(5);
         System.out.println("-----------------Employee with id 5-------------------------");
-        employeeService.print(employeeById);
+        System.out.println(employeeById);
 
         System.out.println("-----------------General employees salary-------------------------");
         System.out.println("General salary: " + employeeService.calculateSalaryAndBonus(defaultEmployees));
@@ -28,19 +28,19 @@ public class Test {
         System.out.println("-----------------Employees sorted by names and salary-------------------------");
         employeeService.printEmployees(sortedEmployeesByNameAndSalary);
 
-        Employee newEmployee = new Employee(6,"Julia", 22, 7000, "Female", 1, 5);
+        Developer newEmployee = new Developer(6,"Julia", 22, 7000, "Female", 10);
         System.out.println("---------------------Edit employee-------------------------");
-        employeeService.print(employeeService.edit(newEmployee));
+        System.out.println(employeeService.edit(newEmployee));
 
         System.out.println("---------------------Delete employee-------------------");
-        employeeService.print(employeeService.remove(2));
+        System.out.println(employeeService.remove(2));
 
         System.out.println("-----------------Full list of employees-------------------------");
         employeeService.printEmployees();
 
         EmployeeFactory employeeFactory = new EmployeeFactory();
         System.out.println("---------------------Generate random emloyees-----------");
-        employeeService.printEmployees(employeeFactory.generateEmployees(3));
+        employeeService.printEmployees(employeeFactory.generateEmployees(14));
     }
 
 

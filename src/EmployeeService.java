@@ -3,17 +3,18 @@ import java.util.*;
 public class EmployeeService {
     Employee[] employees = getEmployees();
 
+
     Employee[] getEmployees(){
-        Employee employeeAlice = new Employee(1,"Alice", 21, 5500, "Female", 3, 5);
-        Employee employeeMark = new Employee(2,"Mark", 45, 7500, "Male", 6, 5);
-        Employee employeeVitalik = new Employee(3,"Vitalik", 32, 7000, "Male", 1, 5);
-        Employee employeeSasha = new Employee(4,"Sasha", 25, 10000, "Female", 7, 5);
-        Employee employeeMartha = new Employee(5,"Martha", 21, 9500, "Female", 1, 5);
-        Employee employeeDiana = new Employee(6,"Diana", 19, 9000, "Female", 0, 5);
-        Employee employeeAlica = new Employee(7,"Alice", 60, 6500, "Female", 3, 5);
-        Employee employeeDima = new Employee(8,"Dima", 23, 12000, "Male", 2, 5);
-        Employee employeeRoma = new Employee(9,"Roma", 20, 8000, "Male", 5, 5);
-        Employee employeeInna = new Employee(10,"Inna", 38, 7500, "Female", 3, 5);
+        Designer employeeAlice = new Designer(1,"Alice", 21, 5500, "Female", 450, 20);
+        Designer employeeMark = new Designer(2,"Mark", 45, 7500, "Male", 450, 15);
+        Designer employeeVitalik = new Designer(3,"Vitalik", 32, 7000, "Male", 450, 22);
+        Manager employeeSasha = new Manager(4,"Sasha", 25, 10000, "Female");
+        Manager employeeMartha = new Manager(5,"Martha", 21, 9500, "Female");
+        Developer employeeDiana = new Developer(6,"Diana", 19, 9000, "Female", 9);
+        Developer employeeAlica = new Developer(7,"Alice", 60, 6500, "Female", 3);
+        Developer employeeDima = new Developer(8,"Dima", 23, 12000, "Male", 12);
+        Developer employeeRoma = new Developer(9,"Roma", 20, 8000, "Male", 5);
+        Developer employeeInna = new Developer(10,"Inna", 38, 7500, "Female", 3);
 
         employees = new Employee[]{employeeAlice, employeeMark, employeeVitalik, employeeSasha, employeeMartha, employeeDiana,
         employeeAlica, employeeDima, employeeRoma, employeeInna};
@@ -22,15 +23,15 @@ public class EmployeeService {
     }
 
     void printEmployees(){
-        for (int i = 0; i < employees.length; i++) {
-            print(employees[i]);
+        for (Employee employee : employees) {
+            System.out.println(employee);
         }
     }
 
     void printEmployees(Employee[] employees){
         for (int i = 0; i < employees.length; i++) {
             if(employees[i] != null) {
-                print(employees[i]);
+                System.out.println(employees[i]);
             }
         }
     }
@@ -38,7 +39,7 @@ public class EmployeeService {
     double calculateSalaryAndBonus(Employee[] employees){
         double generalSalary = 0;
         for (int i = 0; i < employees.length; i++) {
-            generalSalary+=employees[i].salary + (employees[i].salary*employees[i].fixedBugs*employees[i].defaultBugRate/100);
+            generalSalary+=employees[i].countSalary();
         }
 
         return generalSalary;
@@ -46,7 +47,7 @@ public class EmployeeService {
 
     Employee getById(long id){
         for (Employee employee : employees) {
-            if (employee.id == id) {
+            if (employee.getId() == id) {
                 return employee;
             }
         }
@@ -56,7 +57,7 @@ public class EmployeeService {
     Employee[] getByName(String name){
         List<Employee> employeesList = new ArrayList<>();
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i].name.equals(name)) {
+            if (employees[i].getName().equals(name)) {
                 employeesList.add(employees[i]);
             }
         }
@@ -69,7 +70,7 @@ public class EmployeeService {
         String[] names = new String[employees.length];
         //Add employees' names to the array
         for (int i = 0; i < employees.length; i++) {
-            names[i] = employees[i].name;
+            names[i] = employees[i].getName();
         }
         //Sort them in the alphabet order
         Arrays.sort(names);
@@ -78,7 +79,7 @@ public class EmployeeService {
         //Add employees to the list in the sorted order
         for (int i = 0; i < names.length; i++) {
             for (int j = 0; j < employees.length; j++) {
-                if(names[i].equals(employees[j].name)){
+                if(names[i].equals(employees[j].getName())){
                     employeesList.add(employees[j]);
                 }
             }
@@ -96,9 +97,9 @@ public class EmployeeService {
     Employee[] sortByNameAndSalary(){
         Employee[] sortedByName = sortByName();
         for (int i = 0; i < sortedByName.length; i++) {
-            if (i + 1 < sortedByName.length && sortedByName[i].name.equals(sortedByName[i + 1].name)) {
+            if (i + 1 < sortedByName.length && sortedByName[i].getName().equals(sortedByName[i + 1].getName())) {
                 Employee temp;
-                if(sortedByName[i].salary < sortedByName[i+1].salary){
+                if(sortedByName[i].getSalary() < sortedByName[i+1].getSalary()){
                     temp = sortedByName[i];
                     sortedByName[i] = sortedByName[i+1];
                     sortedByName[i+1] = temp;
@@ -111,7 +112,7 @@ public class EmployeeService {
     Employee edit(Employee newEmployee){
         Employee temp = null;
         for (int i = 0; i < employees.length; i++) {
-            if(employees[i].id == newEmployee.id){
+            if(employees[i].getId() == newEmployee.getId()){
                 temp = employees[i];
                 employees[i] = newEmployee;
             }
@@ -122,7 +123,7 @@ public class EmployeeService {
     Employee remove(long id) {
         int index = 0;
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i].id == id) {
+            if (employees[i].getId() == id) {
                 index = i;
             }
         }
@@ -144,15 +145,4 @@ public class EmployeeService {
         return deletedEmployee;
     }
 
-    void print(Employee employee) {
-        System.out.println( "Employee{" +
-                "id=" + employee.id +
-                ", name='" + employee.name + '\'' +
-                ", age=" + employee.age +
-                ", salary=" + employee.salary +
-                ", gender='" + employee.gender + '\'' +
-                ", fixedBugs=" + employee.fixedBugs +
-                ", defaultBugRate=" + employee.defaultBugRate +
-                '}');
-    }
 }

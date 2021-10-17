@@ -49,17 +49,80 @@ public class EmployeeFactory {
         return random.nextInt(10);
     }
 
-    Employee generateEmployee(){
-        Employee employee = new Employee(id++,generateName(generateGender()), generateAge(), generateSalary(), generateGender(), generateFixedBugs(), 5);
-        return employee;
+    int generateWorkedDays(){
+        Random random = new Random();
+
+        return random.nextInt(31);
+    }
+
+    Developer generateDeveloper(){
+        Developer developer = new Developer(id++,generateName(generateGender()), generateAge(), generateSalary(), generateGender(), generateFixedBugs());
+        return developer;
+    }
+
+    Designer generateDesigner(){
+        Designer designer = new Designer(id++,generateName(generateGender()), generateAge(), generateSalary(), generateGender(), 450, generateWorkedDays());
+        return designer;
+    }
+
+    Manager generateManager(){
+        Manager manager = new Manager(id++,generateName(generateGender()), generateAge(), generateSalary(), generateGender());
+        return manager;
+    }
+
+    Developer[] generateDevelopers(int size){
+        Developer[] developers = new Developer[size];
+
+        for (int i = 0; i < developers.length; i++) {
+            developers[i] = generateDeveloper();
+        }
+        return developers;
+    }
+
+    Designer[] generateDesigners(int size){
+        Designer[] designers = new Designer[size];
+
+        for (int i = 0; i < designers.length; i++) {
+            designers[i] = generateDesigner();
+        }
+        return designers;
+    }
+
+    Manager[] generateManagers(int size){
+        Manager[] managers = new Manager[size];
+
+        for (int i = 0; i < managers.length; i++) {
+            managers[i] = generateManager();
+        }
+        return managers;
     }
 
     Employee[] generateEmployees(int size){
-        Employee[] employees = new Employee[size];
+        Random random = new Random();
+        int countDesigners = random.nextInt(size/3);
+        int countDevelopers = random.nextInt(size/2);
+        int countManagers = size - (countDesigners + countDevelopers);
+        Designer[] designers = generateDesigners(countDesigners);
+        Developer[] developers = generateDevelopers(countDevelopers);
+        Manager[] managers = generateManagers(countManagers);
 
-        for (int i = 0; i < employees.length; i++) {
-            employees[i] = generateEmployee();
+        Employee[] employees = new Employee[size];
+        int index = 0;
+        for (Designer designer : designers) {
+            employees[index] = designer;
+            index++;
         }
+
+        for (Developer developer : developers) {
+            employees[index] = developer;
+            index++;
+        }
+
+        for (Manager manager : managers) {
+            employees[index] = manager;
+            index++;
+        }
+
         return employees;
     }
 }
